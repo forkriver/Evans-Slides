@@ -26,7 +26,7 @@ class Slick_Carousel {
 
 		add_shortcode( 'slick_carousel', array( $this, 'shortcode' ) );
 
-		add_filter( 'wp_get_attachment_image_attributes', array( $this, 'lazyload' ) );
+		add_filter( 'wp_get_attachment_image_attributes', array( $this, 'lazyload' ), 10, 2 );
 
 	}
 
@@ -87,7 +87,6 @@ class Slick_Carousel {
 	/**
 	 * Set up lazy loading on post thumbnails
 	 * @param array $attr
-	 * @param string $attachment
 	 * @return array
 	 * @todo Use an option to decide if lazy load should be used; pass this to the JS too
 	 */
