@@ -4,9 +4,11 @@ jQuery(document).ready(function($) {
 	  dots: true,
 	  arrows: true,
 	  autoplay: true,
-	  centerPadding: '30px',
 	  centerMode: true,
-	  lazyLoad: 'ondemand'
+	  lazyLoad: 'ondemand',
+	  cssEase: 'linear',
+	  speed: 500,
+	  autoplaySpeed: 5000
 	});
 });
 

@@ -43,6 +43,12 @@ class Slick_Carousel {
 	function load_styles() {
 		wp_register_style( 'slick-style', '//cdn.jsdelivr.net/jquery.slick/1.3.7/slick.css' );
 		wp_enqueue_style( 'slick-style' );
+
+		if( file_exists( get_stylesheet_directory() . '/slick-carousel.css' ) ) {
+			// Override the bundled styles
+			wp_register_style( 'slick-override', get_stylesheet_directory_uri() . '/slick-carousel.css', array( 'slick-style', ) );
+			wp_enqueue_style( 'slick-override' );
+		}
 	}
 
 	function shortcode( $atts ) {
@@ -92,7 +98,7 @@ class Slick_Carousel {
 	 */
 	function lazyload( $attr, $attachment ) {
 		$attr['data-lazy'] = $attr['src'];
-		$attr['src'] = '';
+		$attr['src'] = plugins_url( 'images/grey.png', __FILE__ );
 		return $attr;
 	}
 
