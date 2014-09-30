@@ -87,11 +87,10 @@ class Slick_Carousel {
 	/**
 	 * Set up lazy loading on post thumbnails
 	 * @param array $attr
-	 * @param string $attachment
 	 * @return array
 	 * @todo Use an option to decide if lazy load should be used; pass this to the JS too
 	 */
-	function lazyload( $attr, $attachment ) {
+	function lazyload( $attr ) {
 		$attr['data-lazy'] = $attr['src'];
 		$attr['src'] = '';
 		return $attr;
