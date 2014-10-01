@@ -14,8 +14,10 @@ class Slick_Carousel {
 	 */
 	var $max_posts = 5;
 	var $default_post_type = 'post';
-	var $orderby = 'post_date';
-	var $order = 'DESC';
+	// var $orderby = 'post_date';
+	var $orderby = 'meta_value_num';
+	// var $order = 'DESC';
+	var $order = 'ASC';
 
 	/**
 	 * Constructor for the slide wossname
@@ -68,6 +70,14 @@ class Slick_Carousel {
 			'posts_per_page'	=> $atts['max_posts'],
 			'orderby'		=> $atts['orderby'],
 			'order'			=> $atts['order'],
+			'meta_query'	=> array(
+				array(
+					'key'		=> '_evans_showtime1',
+					'value'	=> time(),
+					'compare'	=> '>=',
+				),
+			),
+
 		);
 		$q = new WP_Query( $args );
 		if( $q->have_posts() ) {
@@ -75,10 +85,13 @@ class Slick_Carousel {
 			$i = 0;
 			while( $q->have_posts() ) {
 				$q->the_post();
+				$showtime1 = get_post_meta( get_the_ID(), '_evans_showtime1', true );
 				if( has_post_thumbnail() ) {
 					$content .= '<div>' .
 						get_the_post_thumbnail() .
 						'<h1>' . get_the_title() . '</h1>' . PHP_EOL .
+						'<p>' . date( 'Y-m-d', $showtime1 ) . '</p>' . PHP_EOL .
+
 						'</div>' . PHP_EOL;
 				}
 			}
