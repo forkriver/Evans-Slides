@@ -25,6 +25,7 @@ class Slick_Carousel {
 	function __construct() {
 		add_action( 'wp_enqueue_scripts', array( $this, 'load_scripts' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'load_styles' ) );
+		add_action( 'init', array( $this, 'add_size' ) );
 
 		add_shortcode( 'slick_carousel', array( $this, 'shortcode' ) );
 
@@ -82,18 +83,28 @@ class Slick_Carousel {
 		$q = new WP_Query( $args );
 		if( $q->have_posts() ) {
 			$content = '<div class="' . $atts['post_type'] . ' carousel">' . PHP_EOL;
-			$i = 0;
 			while( $q->have_posts() ) {
 				$q->the_post();
-				$showtime1 = get_post_meta( get_the_ID(), '_evans_showtime1', true );
-				if( has_post_thumbnail() ) {
-					$content .= '<div>' .
-						get_the_post_thumbnail() .
-						'<h1>' . get_the_title() . '</h1>' . PHP_EOL .
-						'<p>' . date( 'Y-m-d', $showtime1 ) . '</p>' . PHP_EOL .
+				$post_id = get_the_ID();
+				$content .= '<div>' . PHP_EOL;
 
-						'</div>' . PHP_EOL;
+				if( has_post_thumbnail() ) {
+					$content .= get_the_post_thumbnail( $post_id, 'slick_carousel' );
 				}
+				$content .= '<h2><a href="' . get_permalink() . '">' . get_the_title() . '</a></h2>' . PHP_EOL;
+				$showtimes = '';
+				$single = true;
+				$datefmt = 'M. j, Y \a\t g:iA';
+				for( $i=1; $i<=3; $i++ ){
+					$showtime = get_post_meta( $post_id, '_evans_showtime' . $i, $single );
+					if( $showtime ) {
+						$showtimes .= date( $datefmt, $showtime ) . '<br />' . PHP_EOL;
+					}
+				}
+				if( $showtimes ) {
+					$content .= '<p>' . PHP_EOL . $showtimes . '</p>' . PHP_EOL;
+				}
+				$content .= '</div>' . PHP_EOL;
 			}
 			$content .= '</div> <!-- .' . $atts['post_type'] . ' carousel -->' . PHP_EOL;
 			wp_reset_postdata();
@@ -101,6 +112,10 @@ class Slick_Carousel {
 		}
 
 		return;
+	}
+
+	function add_size() {
+		add_image_size( 'slick_carousel', 800, 400, true );
 	}
 
 	/**
