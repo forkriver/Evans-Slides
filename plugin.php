@@ -66,15 +66,27 @@ class Slick_Carousel {
 		$q = new WP_Query( $args );
 		if( $q->have_posts() ) {
 			$content = '<div class="' . $atts['post_type'] . ' carousel">' . PHP_EOL;
-			$i = 0;
 			while( $q->have_posts() ) {
 				$q->the_post();
+				$content .= '<div>' . PHP_EOL;
 				if( has_post_thumbnail() ) {
-					$content .= '<div>' .
-						get_the_post_thumbnail() .
-						'<h1>' . get_the_title() . '</h1>' . PHP_EOL .
-						'</div>' . PHP_EOL;
+					$content .= get_the_post_thumbnail();
 				}
+				$content .= '<h1>' . get_the_title() . '</h1>' . PHP_EOL;
+				$showtimes = '';
+				$post_id = get_the_ID();
+				$single = true;
+				$datefmt = 'M. j, Y \a\t g:iA';
+				for( $i=1; $i<=3; $i++ ){
+					$showtime = get_post_meta( $post_id, '_evans_showtime' . $i, $single );
+					if( $showtime ) {
+						$showtimes .= date( $datefmt, $showtime ) . '<br />' . PHP_EOL;
+					}
+				}
+				if( $showtimes ) {
+					$content .= '<p>' . PHP_EOL . $showtimes . '</p>' . PHP_EOL;
+				}
+				$content .= '</div>' . PHP_EOL;
 			}
 			$content .= '</div> <!-- .' . $atts['post_type'] . ' carousel -->' . PHP_EOL;
 			wp_reset_postdata();
