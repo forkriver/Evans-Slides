@@ -5,10 +5,24 @@ jQuery(document).ready(function($) {
 	  arrows: true,
 	  autoplay: true,
 	  centerMode: true,
+	  centerPadding: '50px',
 	  lazyLoad: 'ondemand',
-	  cssEase: 'linear',
 	  speed: 500,
-	  autoplaySpeed: 5000
+	  autoplaySpeed: 5000,
+	  responsive: [
+		  {
+      breakpoint: 600,
+      settings: {
+        slidesToShow: 1
+      }
+    },
+    {
+      breakpoint: 480,
+      settings: {
+        slidesToShow: 1
+      }
+    }
+  ]
 	});
 });
 
